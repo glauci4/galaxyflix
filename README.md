@@ -1,14 +1,14 @@
 # GalaxyFlix
 
-GalaxyFlix é uma aplicação web desenvolvida em Laravel para gerenciamento de um catálogo de filmes. O sistema permite cadastrar, listar, editar e excluir filmes, além de integrar automaticamente informações adicionais por meio da API do The Movie Database (TMDB), como poster, sinopse e nota de avaliação.
+GalaxyFlix é uma aplicação web desenvolvida em Laravel para gerenciamento de um catálogo de filmes.
 
 ## Descrição
 
-O GalaxyFlix foi desenvolvido com o objetivo de oferecer uma interface simples e eficiente para organização de filmes em um banco de dados. Durante o cadastro de um filme, ao informar título, gênero e ano, o sistema realiza automaticamente uma requisição à API do TMDB para buscar informações complementares, como imagem de poster, sinopse e avaliação do filme. Esses dados são então armazenados no banco de dados e exibidos na interface do sistema.
+O GalaxyFlix é uma aplicação web desenvolvida para gerenciamento de um catálogo de filmes. O sistema permite cadastrar, listar, editar e excluir registros armazenados em um banco de dados. Durante o cadastro de um filme, ao informar título, gênero e ano, o sistema realiza automaticamente uma requisição à API do TMDB para buscar informações complementares, como imagem de poster, sinopse e avaliação. Esses dados são então armazenados no banco de dados e exibidos na interface da aplicação.
 
 ## Objetivo do Projeto
 
-O objetivo deste projeto é demonstrar, na prática, a utilização do framework Laravel no desenvolvimento de uma aplicação web simples, permitindo o gerenciamento de um catálogo de filmes. Dessa forma, o projeto busca aplicar conceitos estudados na disciplina de Frameworks de Desenvolvimento, como a utilização de frameworks para organização do código, a adoção do padrão MVC e a integração com banco de dados. Como recurso adicional, foi realizada também a integração com uma API externa para obtenção automática de informações complementares sobre os filmes.
+Este projeto tem como objetivo demonstrar, na prática, a utilização do framework Laravel no desenvolvimento de uma aplicação web simples. A aplicação busca aplicar conceitos estudados na disciplina de Frameworks de Desenvolvimento, como a utilização de frameworks para organização do código, a adoção do padrão MVC e a integração com banco de dados. Como recurso adicional, foi realizada também a integração com uma API externa para obtenção automática de informações complementares sobre os filmes.
 
 ## Funcionalidades
 

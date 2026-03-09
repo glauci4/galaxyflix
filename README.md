@@ -161,6 +161,9 @@ Verifique se a variável `TMDB_API_KEY` está corretamente configurada no arquiv
 
 Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais detalhes.
 
-## Autor
+## Autoras
 
-Projeto desenvolvido para fins educacionais utilizando o framework Laravel.
+- **Geovana** ([@Geovana-02](https://github.com/Geovana-02))
+- **Glaucia** ([@glauci4](https://github.com/glauci4))
+- **Kelly** ([@rye-ishii](https://github.com/rye-ishii))
+- **Ketlyn** ([@K3tlyn](https://github.com/K3tlyn))

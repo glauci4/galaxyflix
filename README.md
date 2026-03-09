@@ -113,30 +113,52 @@ Para utilizar o sistema:
 ## Estrutura do Projeto
 
 ```
-galaxyflix
-├── app
-│   ├── Http
-│   │   └── Controllers
-│   │       └── FilmeController.php
-│   └── Models
-│       └── Filme.php
-├── database
-│   └── migrations
-│       ├── create_filmes_table.php
-│       └── add_campos_api_to_filmes_table.php
-├── resources
-│   └── views
-│       ├── layouts
-│       │   └── app.blade.php
-│       └── filmes
-│           ├── index.blade.php
-│           ├── create.blade.php
-│           └── edit.blade.php
-├── routes
-│   └── web.php
+galaxyflix/
+├── app/
+│ ├── Http/
+│ │ └── Controllers/
+│ │ └── FilmeController.php
+│ └── Models/
+│ ├── Filme.php
+│ └── User.php
+├── bootstrap/
+│ ├── app.php
+│ └── providers.php
+├── config/
+│ ├── app.php
+│ ├── auth.php
+│ ├── database.php
+│ └── ...
+├── database/
+│ └── migrations/
+│ ├── 0001_01_01_000000_create_users_table.php
+│ ├── 0001_01_01_000001_create_cache_table.php
+│ ├── 0001_01_01_000002_create_jobs_table.php
+│ ├── 2026_03_01_232107_create_filmes_table.php
+│ └── 2026_03_08_001553_add_campos_api_to_filmes_table.php
+├── public/
+│ └── index.php
+├── resources/
+│ └── views/
+│ ├── layouts/
+│ │ └── app.blade.php
+│ └── filmes/
+│ ├── index.blade.php
+│ ├── create.blade.php
+│ └── edit.blade.php
+├── routes/
+│ └── web.php
+├── storage/
+├── tests/
 ├── .env
+├── .env.example
+├── .gitignore
 ├── artisan
+├── cacert.pem
+├── composer.json
+├── composer.lock
 └── README.md
+
 ```
 
 ## Possíveis Problemas

@@ -16,9 +16,9 @@ class FilmeController extends Controller
             $filmes = Filme::where('titulo', 'like', '%' . $busca . '%')
                 ->orWhere('genero', 'like', '%' . $busca . '%')
                 ->orWhere('ano', 'like', '%' . $busca . '%')
-                ->paginate(5);
+                ->paginate(4);
         } else {
-            $filmes = Filme::paginate(5);
+            $filmes = Filme::paginate(4);
         }
 
         return view('filmes.index', compact('filmes'));

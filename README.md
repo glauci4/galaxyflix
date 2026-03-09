@@ -1,118 +1,128 @@
 # GalaxyFlix
 
-GalaxyFlix é uma aplicação web desenvolvida em Laravel para gerenciamento de um catálogo de filmes. O sistema permite cadastrar, listar, editar e excluir filmes, além de integrar automaticamente informações adicionais a partir da API do The Movie Database (TMDB), como poster, sinopse e nota de avaliação.
+GalaxyFlix é uma aplicação web desenvolvida em Laravel para gerenciamento de um catálogo de filmes. O sistema permite cadastrar, listar, editar e excluir filmes, além de integrar automaticamente informações adicionais por meio da API do The Movie Database (TMDB), como poster, sinopse e nota de avaliação.
 
 ## Descrição
 
-O objetivo do GalaxyFlix é oferecer uma interface simples para organização de filmes em um banco de dados, enriquecendo os registros com dados externos obtidos por meio da API TMDB. Ao cadastrar um filme informando título, gênero e ano, o sistema realiza uma requisição à API para obter informações adicionais e armazená-las automaticamente.
+O GalaxyFlix foi desenvolvido com o objetivo de oferecer uma interface simples e eficiente para organização de filmes em um banco de dados. Durante o cadastro de um filme, ao informar título, gênero e ano, o sistema realiza automaticamente uma requisição à API do TMDB para buscar informações complementares, como imagem de poster, sinopse e avaliação do filme. Esses dados são então armazenados no banco de dados e exibidos na interface do sistema.
+
+## Objetivo do Projeto
+
+O objetivo deste projeto é demonstrar, na prática, a utilização do framework Laravel no desenvolvimento de uma aplicação web simples, permitindo o gerenciamento de um catálogo de filmes. Dessa forma, o projeto busca aplicar conceitos estudados na disciplina de Frameworks de Desenvolvimento, como a utilização de frameworks para organização do código, a adoção do padrão MVC e a integração com banco de dados. Como recurso adicional, foi realizada também a integração com uma API externa para obtenção automática de informações complementares sobre os filmes.
 
 ## Funcionalidades
 
-* Cadastro de filmes
-* Listagem de filmes com paginação
-* Busca por título, gênero ou ano
-* Edição de filmes cadastrados
-* Exclusão de filmes
-* Integração com API externa para obter poster, sinopse e nota
+- Cadastro de filmes
+- Listagem de filmes com paginação de 8 itens por página
+- Busca de filmes por título, gênero ou ano
+- Edição de filmes cadastrados
+- Exclusão de filmes
+- Exibição de poster do filme
+- Visualização de sinopse com opção "Ler mais / Ler menos"
+- Integração automática com a API TMDB para obtenção de informações adicionais
+- Paginação em português com botões "Anterior" e "Próxima"
 
 ## Tecnologias Utilizadas
 
-* Laravel 12 (framework PHP)
-* PHP 8+
-* MySQL
-* Blade (sistema de templates do Laravel)
-* API The Movie Database (TMDB)
-* CSS utilitário via CDN
+- Laravel 12 (framework PHP)
+- PHP 8 ou superior
+- MySQL
+- Blade (sistema de templates do Laravel)
+- API The Movie Database (TMDB)
+- CSS via CDN para estilização da interface
 
 ## Requisitos
 
-Antes de executar o projeto, é necessário possuir:
+Antes de executar o projeto, é necessário possuir os seguintes softwares instalados:
 
-* PHP 8.1 ou superior
-* Composer
-* MySQL
-* Git
-* Navegador web
+- PHP 8.1 ou superior
+- Composer
+- MySQL
+- Git
+- Navegador web
 
 ## Instalação
 
 1. Clone o repositório:
 
-```
 git clone https://github.com/seu-usuario/galaxyflix.git
+
+2. Entre na pasta:
+
 cd galaxyflix
-```
 
-2. Instale as dependências do projeto:
 
-```
+3. Instale as dependências do projeto:
+
+
 composer install
-```
 
-3. Crie o arquivo de configuração do ambiente:
 
-```
+4. Crie o arquivo de configuração do ambiente:
+
+
 cp .env.example .env
-```
 
-4. Configure o banco de dados no arquivo `.env`:
 
-```
+5. Configure o banco de dados no arquivo `.env`:
+
+
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=galaxyflix
 DB_USERNAME=root
 DB_PASSWORD=
-```
 
-5. Gere a chave da aplicação Laravel:
 
-```
+6. Gere a chave da aplicação Laravel:
+
+
 php artisan key:generate
-```
 
-6. Configure a chave da API TMDB no arquivo `.env`:
 
-```
+7. Configure a chave da API TMDB no arquivo `.env`:
+
+
 TMDB_API_KEY=sua_chave_aqui
-```
 
-7. Execute as migrations para criar as tabelas no banco de dados:
 
-```
+9. Execute as migrations para criar as tabelas no banco de dados:
+
+
 php artisan migrate
-```
 
-8. Inicie o servidor local:
 
-```
+10. Inicie o servidor local:
+
+
 php artisan serve
-```
 
-9. Acesse a aplicação no navegador:
 
-```
+11. Acesse a aplicação no navegador:
+
+
 http://127.0.0.1:8000/filmes
-```
+
 
 ## Uso
 
 Para utilizar o sistema:
 
-1. Acesse a página inicial da aplicação.
-2. Clique em "Cadastrar filme".
+1. Acesse a página principal da aplicação.
+2. Clique na opção de cadastrar um novo filme.
 3. Preencha os campos obrigatórios:
-
-   * Título
-   * Gênero
-   * Ano
-4. Ao salvar, o sistema consulta a API TMDB e busca automaticamente informações adicionais do filme.
-5. Os filmes cadastrados aparecem na listagem principal, onde podem ser pesquisados, editados ou excluídos.
+   - Título
+   - Gênero
+   - Ano
+4. Ao salvar o registro, o sistema consulta automaticamente a API TMDB e obtém informações adicionais do filme.
+5. Os filmes cadastrados são exibidos na listagem principal, com paginação de 8 itens por página.
+6. A partir da listagem é possível pesquisar, editar ou excluir filmes.
+7. Para visualizar a sinopse completa, utilize a opção "Ler mais" exibida no card do filme.
 
 ## Estrutura do Projeto
 
-```
+
 galaxyflix/
 ├── app/
 │ ├── Http/
@@ -122,58 +132,44 @@ galaxyflix/
 │ ├── Filme.php
 │ └── User.php
 ├── bootstrap/
-│ ├── app.php
-│ └── providers.php
 ├── config/
-│ ├── app.php
-│ ├── auth.php
-│ ├── database.php
-│ └── ...
 ├── database/
 │ └── migrations/
-│ ├── 0001_01_01_000000_create_users_table.php
-│ ├── 0001_01_01_000001_create_cache_table.php
-│ ├── 0001_01_01_000002_create_jobs_table.php
 │ ├── 2026_03_01_232107_create_filmes_table.php
 │ └── 2026_03_08_001553_add_campos_api_to_filmes_table.php
 ├── public/
-│ └── index.php
 ├── resources/
 │ └── views/
 │ ├── layouts/
 │ │ └── app.blade.php
-│ └── filmes/
-│ ├── index.blade.php
-│ ├── create.blade.php
-│ └── edit.blade.php
+│ ├── filmes/
+│ │ ├── index.blade.php
+│ │ ├── create.blade.php
+│ │ └── edit.blade.php
+│ └── vendor/
+│ └── pagination/
+│ └── galaxy.blade.php
 ├── routes/
 │ └── web.php
-├── storage/
-├── tests/
 ├── .env
-├── .env.example
-├── .gitignore
 ├── artisan
 ├── cacert.pem
-├── composer.json
-├── composer.lock
 └── README.md
 
-```
 
 ## Possíveis Problemas
 
 Erro relacionado a certificado SSL:
 
-Caso apareça erro relacionado ao cURL ou certificado SSL, verifique se o arquivo `cacert.pem` está presente na raiz do projeto e corretamente configurado no ambiente PHP.
+Caso ocorra erro relacionado ao cURL ou certificado SSL ao consumir a API, verifique se o arquivo `cacert.pem` está presente na raiz do projeto e corretamente configurado no ambiente PHP.
 
 Erro de tabela inexistente:
 
-Se o sistema indicar que a tabela não existe, execute novamente:
+Caso o sistema indique que a tabela não existe no banco de dados, execute novamente o comando:
 
-```
+
 php artisan migrate
-```
+
 
 Erro na consulta da API:
 
@@ -185,7 +181,9 @@ Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE par
 
 ## Autoras
 
-- **Geovana** ([@Geovana-02](https://github.com/Geovana-02))
-- **Glaucia** ([@glauci4](https://github.com/glauci4))
-- **Kelly** ([@rye-ishii](https://github.com/rye-ishii))
-- **Ketlyn** ([@K3tlyn](https://github.com/K3tlyn))
+Este projeto foi desenvolvido para fins acadêmicos como parte de uma atividade prática da disciplina, com o objetivo de aplicar conhecimentos de desenvolvimento web utilizando o framework Laravel.
+
+- Geovana (https://github.com/Geovana-02)
+- Glaucia (https://github.com/glauci4)
+- Kelly (https://github.com/rye-ishii)
+- Ketlyn (https://github.com/K3tlyn)

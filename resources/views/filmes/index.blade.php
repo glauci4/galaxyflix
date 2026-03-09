@@ -7,7 +7,7 @@
     <!-- TÍTULO -->
     <h1 class="titulo-neon" style="text-align: center; margin-bottom: 8px;">GalaxyFlix</h1>
     
-    <!-- BOTÃO CADASTRAR FILME (discreto e elegante) -->
+    <!-- BOTÃO CADASTRAR FILME -->
     <div style="display: flex; justify-content: center; margin-bottom: 20px;">
         <a href="/filmes/create" class="btn-galaxy-neon" style="padding: 6px 20px; font-size: 14px;">
             + Cadastrar filme
@@ -72,10 +72,19 @@
                         <span>{{ $filme->genero }}</span>
                     </div>
                     
+                    <!-- SINOPSE COM EXPANSÃO -->
                     @if($filme->sinopse)
-                    <p style="color: #ccc; font-size: 14px; margin-bottom: 16px; max-height: 60px; overflow: hidden;">
-                        {{ Str::limit($filme->sinopse, 100) }}
-                    </p>
+                    <div style="position: relative;">
+                        <p id="sinopse-{{ $filme->id }}" style="color: #ccc; font-size: 14px; margin-bottom: 8px; max-height: 60px; overflow: hidden; transition: max-height 0.3s ease;">
+                            {{ $filme->sinopse }}
+                        </p>
+                        @if(strlen($filme->sinopse) > 150)
+                        <button onclick="document.getElementById('sinopse-{{ $filme->id }}').style.maxHeight = document.getElementById('sinopse-{{ $filme->id }}').style.maxHeight === '60px' ? '500px' : '60px'; this.innerText = this.innerText === 'Ler mais' ? 'Ler menos' : 'Ler mais';" 
+                                style="background: none; border: none; color: #B87CFF; cursor: pointer; font-size: 12px; padding: 0;">
+                            Ler mais
+                        </button>
+                        @endif
+                    </div>
                     @endif
                     
                     <!-- AÇÕES -->
@@ -108,7 +117,7 @@
 
     <!-- PAGINAÇÃO -->
     <div style="margin-top: 32px;">
-        {{ $filmes->links() }}
+        {{ $filmes->links('vendor.pagination.galaxy') }}
     </div>
 </div>
 

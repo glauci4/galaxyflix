@@ -1,0 +1,148 @@
+/* Tailwind v3: importa as camadas base do framework */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @layer base: estilos que se aplicam a elementos HTML básicos */
+@layer base {
+  body {
+    /* Aplica cores de fundo e texto a toda página */
+    @apply bg-galaxy-dark text-white;
+    
+    /* background-image radial: cria efeito de nebulosa
+       Agora com mais camadas para efeito galáctico */
+    background-image: 
+      /* Nebulosa roxa principal */
+      radial-gradient(circle at 20% 30%, rgba(75, 30, 120, 0.4) 0%, transparent 40%),
+      /* Nebulosa azul secundária */
+      radial-gradient(circle at 80% 70%, rgba(30, 60, 150, 0.3) 0%, transparent 50%),
+      /* Pontos de luz */
+      radial-gradient(circle at 40% 80%, rgba(180, 130, 255, 0.2) 0%, transparent 30%),
+      /* Fundo escuro base */
+      linear-gradient(to bottom, #0B0C1E, #14152B);
+  }
+}
+
+/* @layer components: classes CSS reutilizáveis que criamos */
+@layer components {
+  /* Botão estilo galáxia (roxo/azul em vez de vermelho) */
+  .btn-galaxy {
+    /* Gradiente roxo/azul */
+    @apply bg-gradient-to-r from-galaxy-purple to-galaxy-blue 
+            hover:from-galaxy-light-purple hover:to-galaxy-neon-blue
+            text-white        /* Texto branco */
+            font-bold         /* Negrito */
+            py-2 px-6         /* Padding vertical e horizontal */
+            rounded-lg        /* Cantos arredondados */
+            transition-all    /* Anima suavemente as mudanças */
+            duration-300      /* Duração da animação */
+            transform         /* Permite transformações */
+            hover:scale-105   /* Aumenta 5% ao passar mouse */
+            hover:shadow-lg   /* Sombra ao passar mouse */
+            hover:shadow-galaxy-purple/30; /* Brilho roxo */
+  }
+  
+  /* Variação do botão com efeito neon */
+  .btn-galaxy-neon {
+    @apply bg-galaxy-deep 
+           border-2 border-galaxy-neon-blue
+           text-galaxy-neon-blue
+           hover:bg-galaxy-neon-blue hover:text-white
+           font-bold py-2 px-6 rounded-lg
+           transition-all duration-300
+           hover:shadow-lg hover:shadow-galaxy-neon-blue/50;
+  }
+  
+  /* Card de filme com efeito galáctico (mais sofisticado) */
+  .card-galaxy {
+    /* Fundo com gradiente e vidro fosco */
+    @apply bg-gradient-to-br from-galaxy-purple/30 to-galaxy-blue/20 
+            backdrop-blur-md      /* Efeito vidro fosco mais forte */
+            border border-white/10 /* Borda sutil */
+            rounded-xl            /* Cantos bem arredondados */
+            shadow-2xl            /* Sombra grande */
+            hover:shadow-galaxy-neon-purple/20 /* Brilho roxo ao passar */
+            transition-all duration-300;
+  }
+  
+  /* Inputs do formulário com tema galáctico */
+  .input-galaxy {
+    @apply w-full                 /* Largura total */
+            px-4 py-3             /* Espaçamento interno */
+            bg-galaxy-deep/50      /* Fundo azul profundo semi-transparente */
+            border border-galaxy-light-purple/30 /* Borda roxa sutil */
+            rounded-lg             /* Cantos arredondados */
+            focus:border-galaxy-neon-purple /* Borda roxa neon ao focar */
+            focus:ring-2           /* Anel de foco */
+            focus:ring-galaxy-neon-purple/30 /* Anel roxo neon semi-transparente */
+            text-white             /* Texto branco */
+            placeholder-galaxy-light-purple/50 /* Placeholder roxo claro */
+            transition-all duration-200;
+  }
+  
+  /* Input com estilo diferente (azul neon) */
+  .input-galaxy-blue {
+    @apply w-full px-4 py-3
+           bg-galaxy-deep/50
+           border border-galaxy-neon-blue/30
+           rounded-lg
+           focus:border-galaxy-neon-blue
+           focus:ring-2 focus:ring-galaxy-neon-blue/30
+           text-white
+           placeholder-galaxy-blue/50;
+  }
+  
+  /* Estrelas decorativas (mais variações) */
+  .star {
+    @apply absolute               /* Posição absoluta */
+            w-0.5 h-0.5           /* Tamanho minúsculo */
+            bg-galaxy-star         /* Cor amarela */
+            rounded-full           /* Formato circular */
+            animate-twinkle;       /* Animação de piscar */
+  }
+  
+  /* Estrela maior e azul */
+  .star-blue {
+    @apply absolute w-1 h-1
+           bg-galaxy-neon-blue
+           rounded-full
+           animate-pulse-slow;
+  }
+  
+  /* Estrela cadente */
+  .shooting-star {
+    @apply absolute w-0.5 h-0.5
+           bg-white
+           rounded-full
+           animate-pulse;
+    box-shadow: 0 0 10px 2px rgba(180, 130, 255, 0.8);
+  }
+  
+  /* Badge de nota com estilo galáctico */
+  .nota-badge {
+    @apply absolute top-2 right-2
+           bg-galaxy-deep/90
+           backdrop-blur-sm
+           border border-galaxy-neon-purple/50
+           text-galaxy-neon-purple
+           px-2 py-1 rounded-lg
+           text-sm font-bold
+           shadow-lg shadow-galaxy-neon-purple/20;
+  }
+  
+  /* Título com efeito neon */
+  .titulo-neon {
+    @apply text-4xl font-bold
+           text-transparent bg-clip-text
+           bg-gradient-to-r from-galaxy-neon-purple to-galaxy-neon-blue
+           drop-shadow-[0_0_10px_rgba(180,130,255,0.5)];
+  }
+  
+  /* Link com efeito galáctico */
+  .link-galaxy {
+    @apply text-galaxy-neon-blue
+           hover:text-galaxy-neon-purple
+           transition-colors duration-200
+           hover:underline decoration-galaxy-neon-purple/50;
+  }
+}

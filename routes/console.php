@@ -1,0 +1,1 @@
+Route::resource('filmes', FilmeController::class);

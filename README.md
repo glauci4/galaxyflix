@@ -122,40 +122,95 @@ Para utilizar o sistema:
 
 ## Estrutura do Projeto
 
-
 galaxyflix/
 ├── app/
-│ ├── Http/
-│ │ └── Controllers/
-│ │ └── FilmeController.php
-│ └── Models/
-│ ├── Filme.php
-│ └── User.php
+│   ├── Http/
+│   │   └── Controllers/
+│   │       ├── Controller.php
+│   │       └── FilmeController.php
+│   ├── Models/
+│   │   ├── Filme.php
+│   │   └── User.php
+│   └── Providers/
+│       └── AppServiceProvider.php
 ├── bootstrap/
+│   ├── app.php
+│   └── providers.php
 ├── config/
+│   ├── app.php
+│   ├── auth.php
+│   ├── cache.php
+│   ├── database.php
+│   ├── filesystems.php
+│   ├── logging.php
+│   ├── mail.php
+│   ├── queue.php
+│   ├── services.php
+│   └── session.php
 ├── database/
-│ └── migrations/
-│ ├── 2026_03_01_232107_create_filmes_table.php
-│ └── 2026_03_08_001553_add_campos_api_to_filmes_table.php
+│   ├── factories/
+│   │   └── UserFactory.php
+│   ├── migrations/
+│   │   ├── 0001_01_01_000000_create_users_table.php
+│   │   ├── 0001_01_01_000001_create_cache_table.php
+│   │   ├── 0001_01_01_000002_create_jobs_table.php
+│   │   ├── 2026_03_01_232107_create_filmes_table.php
+│   │   └── 2026_03_08_001553_add_campos_api_to_filmes_table.php
+│   └── seeders/
+│       └── DatabaseSeeder.php
+├── lang/
+│   └── en/
+│       ├── auth.php
+│       ├── pagination.php
+│       ├── passwords.php
+│       └── validation.php
 ├── public/
+│   ├── .htaccess
+│   ├── favicon.ico
+│   ├── index.php
+│   └── robots.txt
 ├── resources/
-│ └── views/
-│ ├── layouts/
-│ │ └── app.blade.php
-│ ├── filmes/
-│ │ ├── index.blade.php
-│ │ ├── create.blade.php
-│ │ └── edit.blade.php
-│ └── vendor/
-│ └── pagination/
-│ └── galaxy.blade.php
+│   └── views/
+│       ├── filmes/
+│       │   ├── create.blade.php
+│       │   ├── edit.blade.php
+│       │   └── index.blade.php
+│       ├── layouts/
+│       │   └── app.blade.php
+│       └── vendor/
+│           └── pagination/
+│               └── galaxy.blade.php
 ├── routes/
-│ └── web.php
+│   ├── console.php
+│   └── web.php
+├── storage/
+│   ├── app/
+│   │   ├── private/
+│   │   └── public/
+│   ├── framework/
+│   │   ├── cache/
+│   │   ├── sessions/
+│   │   ├── testing/
+│   │   └── views/
+│   └── logs/
+│       └── laravel.log
+├── tests/
+│   ├── Feature/
+│   ├── Unit/
+│   └── TestCase.php
+├── vendor/
+│   ├── [todas as dependências do Composer]
+│   └── autoload.php
 ├── .env
+├── .env.example
+├── .gitattributes
+├── .gitignore
 ├── artisan
 ├── cacert.pem
+├── composer.json
+├── composer.lock
+├── phpunit.xml
 └── README.md
-
 
 ## Possíveis Problemas
 

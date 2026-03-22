@@ -65,7 +65,7 @@ git --version
 ## Instalação rápida
 
 ```bash
-git clone https://github.com/seu-usuario/galaxyflix.git
+git clone https://github.com/glauci4/galaxyflix.git
 cd galaxyflix
 composer install
 cp .env.example .env

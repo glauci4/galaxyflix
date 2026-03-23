@@ -11,13 +11,3 @@ Route::get('/', function () {
 // Rotas CRUD para filmes
 Route::resource('filmes', FilmeController::class);
 
-// Rota de debug para verificar conexões e configurações
-Route::get('/debug', function() {
-    try {
-        // Testar conexão com banco
-        DB::connection()->getPdo();
-        return "Conexão com banco OK!";
-    } catch (Exception $e) {
-        return "Erro: " . $e->getMessage();
-    }
-});

@@ -45,5 +45,8 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 RUN php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
+   
+ # Rodar migrations
+RUN php artisan migrate --force
 
 EXPOSE 80

@@ -44,12 +44,15 @@ O objetivo do projeto é demonstrar o uso do Laravel, a aplicação do padrão M
 - MySQL
 - Blade (templates)
 - API The Movie Database (TMDB)
+- Docker
 
 ## Requisitos
 
-- PHP 8.1 ou superior (extensões: BCMath, Ctype, Fileinfo, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML)
-- Composer
-- MySQL 5.7 ou superior
+
+- PHP 8.1 ou superior (extensões: BCMath, Ctype, Fileinfo, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML) - para instalação manual
+- Composer - para instalação manual
+- MySQL 5.7 ou superior - para instalação manual
+- Docker Desktop - para execução via container
 - Git
 - Navegador web
 
@@ -60,9 +63,29 @@ php -v
 composer -v
 mysql --version
 git --version
+docker --version
 ```
 
 ## Instalação rápida
+
+### Opção 1: com Docker (recomendado)
+
+```bash
+# Clone o repositório
+git clone https://github.com/glauci4/galaxyflix.git
+cd galaxyflix
+
+# Build da imagem
+docker build -t galaxyflix .
+
+# Execute o container
+docker run -d -p 8080:80 --name galaxyflix-app galaxyflix
+
+# Acesse no navegador
+http://localhost:8080/filmes
+```
+
+### Opção 2: Manual (sem Docker)
 
 ```bash
 git clone https://github.com/glauci4/galaxyflix.git
@@ -94,6 +117,39 @@ php artisan serve
 ```
 
 ## Configuração
+
+### Para execução com Docker
+
+O Dockerfile já utiliza o arquivo `.env` existente no projeto. Certifique-se de que ele contém:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=host.docker.internal
+DB_PORT=3306
+DB_DATABASE=galaxyflix
+DB_USERNAME=root
+DB_PASSWORD=sua_senha
+TMDB_API_KEY=sua_chave_aqui
+```
+- Se estiver usando Docker no Windows, o banco de dados pode estar no host. Utilize `DB_HOST=host.docker.internal` para conectar ao MySQL do Windows.
+- Alternativamente, você pode passar as variáveis diretamente no comando `docker run`:
+
+```bash
+docker run -d -p 8080:80 \
+  -e DB_CONNECTION=mysql \
+  -e DB_HOST=host.docker.internal \
+  -e DB_PORT=3306 \
+  -e DB_DATABASE=galaxyflix \
+  -e DB_USERNAME=root \
+  -e DB_PASSWORD=sua_senha \
+  -e TMDB_API_KEY=sua_chave_api \
+  -e APP_KEY=gerado_pelo_laravel \
+  -e APP_ENV=production \
+  -e APP_DEBUG=false \
+  --name galaxyflix-app galaxyflix
+```
+
+### Para execução manual (sem Docker)
 
 - Configure o arquivo `.env` com as credenciais do banco:
 
@@ -163,16 +219,25 @@ galaxyflix/
 ├── .env
 ├── artisan
 ├── cacert.pem
+├── Dockerfile
 └── README.md
 ```
 
 ## Possíveis problemas
 
+### Geral
 - Erro cURL/SSL (cURL error 60): verifique se `cacert.pem` está presente na raiz do projeto.
 - Tabela inexistente: execute `php artisan migrate`.
 - Erro na consulta da API: confirme `TMDB_API_KEY` no `.env`.
 - Permissão (Linux/macOS): execute `chmod -R 775 storage bootstrap/cache`.
 - Porta ocupada: use `php artisan serve --port=8001`.
+
+### Docker
+- **Container não sobe**: verifique os logs com `docker logs galaxyflix-app`.
+- **Erro de conexão com banco**: confirme se `DB_HOST=host.docker.internal` está configurado no `.env` ou nas variáveis.
+- **Porta 8080 já em uso**: altere a porta no comando `docker run -p 8081:80`.
+- **Permissão negada no Windows**: execute o PowerShell como administrador.
+- **Docker Desktop não está rodando**: inicie o Docker Desktop antes de executar os comandos.
 
 ## Licença
 

@@ -4,12 +4,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Filesystem Disk
+    | Disco padrão do sistema de arquivos
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the default filesystem disk that should be used
-    | by the framework. The "local" disk, as well as a variety of cloud
-    | based disks are available to your application for file storage.
+    | Aqui você pode especificar qual disco de armazenamento será usado
+    | por padrão pelo framework. O disco "local", assim como diversos
+    | discos baseados em nuvem, estão disponíveis para uso.
     |
     */
 
@@ -17,14 +17,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Filesystem Disks
+    | Discos de armazenamento
     |--------------------------------------------------------------------------
     |
-    | Below you may configure as many filesystem disks as necessary, and you
-    | may even configure multiple disks for the same driver. Examples for
-    | most supported storage drivers are configured here for reference.
-    |
-    | Supported drivers: "local", "ftp", "sftp", "s3"
+    | Aqui você pode configurar quantos discos de armazenamento quiser.
+    | É possível até configurar múltiplos discos para o mesmo driver.
+    | Drivers suportados: "local", "ftp", "sftp", "s3"
     |
     */
 
@@ -60,16 +58,32 @@ return [
             'report' => false,
         ],
 
+        /*
+        |--------------------------------------------------------------------------
+        | Disco temporário
+        |--------------------------------------------------------------------------
+        |
+        | Este disco foi adicionado para armazenar arquivos temporários
+        | usados pelo Laravel (ex.: compilação de views Blade).
+        | Assim evitamos problemas com o diretório /tmp do sistema.
+        |
+        */
+        'tmp' => [
+            'driver' => 'local',
+            'root' => env('APP_TMP', storage_path('tmp')),
+            'visibility' => 'private',
+        ],
+
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Symbolic Links
+    | Links simbólicos
     |--------------------------------------------------------------------------
     |
-    | Here you may configure the symbolic links that will be created when the
-    | `storage:link` Artisan command is executed. The array keys should be
-    | the locations of the links and the values should be their targets.
+    | Aqui você pode configurar os links simbólicos que serão criados
+    | quando o comando `storage:link` for executado. As chaves do array
+    | são os locais dos links e os valores são seus destinos.
     |
     */
 

@@ -5,7 +5,8 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip \
     git \
-    && docker-php-ext-install pdo pdo_mysql zip
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -25,10 +26,6 @@ RUN echo '<VirtualHost *:80>\n\
 # Copiar arquivos do projeto
 COPY . /var/www/html
 
-# Remover vendor existente e limpar
-RUN rm -rf /var/www/html/vendor \
-    && rm -rf /var/www/html/composer.lock
-
 # Configurar permissões
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
@@ -41,15 +38,12 @@ RUN chown -R www-data:www-data /var/www/html \
 
 WORKDIR /var/www/html
 
-# Instalar dependências (agora limpo)
+# Instalar dependências
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Cachear configurações
 RUN php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
-
-# Rodar migrations automaticamente
-RUN php artisan migrate --force
 
 EXPOSE 80

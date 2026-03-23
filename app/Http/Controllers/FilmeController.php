@@ -207,7 +207,6 @@ class FilmeController extends Controller
      * ATUALIZA UM FILME EXISTENTE COM VALIDAÇÃO COMPLETA DA API
      * Valida: título, ano e gênero com os dados do TMDB
      * Acumula todos os erros para mostrar de uma vez
-     * Se o título for alterado, busca novos dados na API
      */
     public function update(Request $request, Filme $filme)
     {
@@ -225,122 +224,105 @@ class FilmeController extends Controller
             'ano.max' => 'O ano não pode ser maior que o ano atual.',
         ]);
 
-        // Verifica se o título foi alterado
-        $tituloAlterado = $request->titulo && $request->titulo !== $filme->titulo;
+        // BUSCA NA API TMDB COM O TÍTULO ATUALIZADO
+        $resultados = $this->buscarFilmeApi($request->titulo);
         
-        // Se o título foi alterado, busca novos dados na API
-        if ($tituloAlterado) {
-            // BUSCA NA API TMDB COM O NOVO TÍTULO
-            $resultados = $this->buscarFilmeApi($request->titulo);
-            
-            if (empty($resultados)) {
-                return redirect()->back()
-                    ->withErrors(['titulo' => 'Nenhum filme encontrado com este título no TMDB.'])
-                    ->withInput();
+        if (empty($resultados)) {
+            return redirect()->back()
+                ->withErrors(['titulo' => 'Nenhum filme encontrado com este título no TMDB.'])
+                ->withInput();
+        }
+        
+        // VALIDAÇÃO DO TÍTULO
+        $tituloDigitado = trim($request->titulo);
+        $tituloEncontrado = false;
+        $possiveisTitulos = [];
+        $possiveisFilmes = [];
+        
+        foreach ($resultados as $filmeApi) {
+            $possiveisFilmes[] = $filmeApi;
+            if ($this->compararTitulos($tituloDigitado, $filmeApi['title']) || 
+                $this->compararTitulos($tituloDigitado, $filmeApi['original_title'])) {
+                $tituloEncontrado = true;
             }
-            
-            // VALIDAÇÃO DO TÍTULO
-            $tituloDigitado = trim($request->titulo);
-            $tituloEncontrado = false;
-            $possiveisTitulos = [];
-            $possiveisFilmes = [];
-            
-            foreach ($resultados as $filmeApi) {
-                $possiveisFilmes[] = $filmeApi;
-                if ($this->compararTitulos($tituloDigitado, $filmeApi['title']) || 
-                    $this->compararTitulos($tituloDigitado, $filmeApi['original_title'])) {
-                    $tituloEncontrado = true;
-                }
-                $possiveisTitulos[] = $filmeApi['title'];
+            $possiveisTitulos[] = $filmeApi['title'];
+        }
+        
+        if (!$tituloEncontrado) {
+            $sugestoes = implode(', ', array_slice($possiveisTitulos, 0, 3));
+            $erros['titulo'] = "Título não encontrado. Títulos próximos: $sugestoes";
+        }
+        
+        // VALIDAÇÃO DO ANO
+        $anoDigitado = $request->ano;
+        $filmesDoAnoCorreto = [];
+        $anosDisponiveis = [];
+        
+        foreach ($possiveisFilmes as $filmeApi) {
+            $anoApi = date('Y', strtotime($filmeApi['release_date']));
+            if (!in_array($anoApi, $anosDisponiveis)) {
+                $anosDisponiveis[] = $anoApi;
             }
-            
-            if (!$tituloEncontrado) {
-                $sugestoes = implode(', ', array_slice($possiveisTitulos, 0, 3));
-                $erros['titulo'] = "Título não encontrado. Títulos próximos: $sugestoes";
+            if ($anoApi == $anoDigitado) {
+                $filmesDoAnoCorreto[] = $filmeApi;
             }
-            
-            // VALIDAÇÃO DO ANO
-            $anoDigitado = $request->ano;
-            $filmesDoAnoCorreto = [];
-            $anosDisponiveis = [];
-            
-            foreach ($possiveisFilmes as $filmeApi) {
-                $anoApi = date('Y', strtotime($filmeApi['release_date']));
-                if (!in_array($anoApi, $anosDisponiveis)) {
-                    $anosDisponiveis[] = $anoApi;
-                }
-                if ($anoApi == $anoDigitado) {
-                    $filmesDoAnoCorreto[] = $filmeApi;
-                }
-            }
-            sort($anosDisponiveis);
-            
-            if (empty($filmesDoAnoCorreto)) {
-                $anosStr = implode(', ', $anosDisponiveis);
-                $erros['ano'] = "Ano incorreto. Anos disponíveis para este título: $anosStr";
-            }
-            
-            // VALIDAÇÃO DO GÊNERO
-            $generoDigitado = trim($request->genero);
-            $generoEncontrado = false;
-            $possiveisGeneros = [];
-            $filmeApiCorrespondente = null;
-            
-            $filmesParaValidarGenero = !empty($filmesDoAnoCorreto) ? $filmesDoAnoCorreto : $possiveisFilmes;
-            
-            foreach ($filmesParaValidarGenero as $filmeApi) {
-                if (isset($filmeApi['genre_ids']) && is_array($filmeApi['genre_ids'])) {
-                    foreach ($filmeApi['genre_ids'] as $genreId) {
-                        $generoApi = $this->generosMap[$genreId] ?? '';
-                        if (!in_array($generoApi, $possiveisGeneros) && !empty($generoApi)) {
-                            $possiveisGeneros[] = $generoApi;
-                        }
-                        if ($this->compararGeneros($generoDigitado, $generoApi)) {
-                            $generoEncontrado = true;
-                            $filmeApiCorrespondente = $filmeApi;
-                        }
+        }
+        sort($anosDisponiveis);
+        
+        if (empty($filmesDoAnoCorreto)) {
+            $anosStr = implode(', ', $anosDisponiveis);
+            $erros['ano'] = "Ano incorreto. Anos disponíveis para este título: $anosStr";
+        }
+        
+        // VALIDAÇÃO DO GÊNERO
+        $generoDigitado = trim($request->genero);
+        $generoEncontrado = false;
+        $possiveisGeneros = [];
+        $filmeApiCorrespondente = null;
+        
+        $filmesParaValidarGenero = !empty($filmesDoAnoCorreto) ? $filmesDoAnoCorreto : $possiveisFilmes;
+        
+        foreach ($filmesParaValidarGenero as $filmeApi) {
+            if (isset($filmeApi['genre_ids']) && is_array($filmeApi['genre_ids'])) {
+                foreach ($filmeApi['genre_ids'] as $genreId) {
+                    $generoApi = $this->generosMap[$genreId] ?? '';
+                    if (!in_array($generoApi, $possiveisGeneros) && !empty($generoApi)) {
+                        $possiveisGeneros[] = $generoApi;
+                    }
+                    if ($this->compararGeneros($generoDigitado, $generoApi)) {
+                        $generoEncontrado = true;
+                        $filmeApiCorrespondente = $filmeApi;
                     }
                 }
             }
-            
-            $possiveisGeneros = array_unique(array_filter($possiveisGeneros));
-            sort($possiveisGeneros);
-            
-            if (!$generoEncontrado && !empty($possiveisGeneros)) {
-                $generosStr = implode(', ', $possiveisGeneros);
-                $erros['genero'] = "Gênero incorreto. Gêneros disponíveis: $generosStr";
-            }
-            
-            // SE HOUVER ERROS, MOSTRA TUDO DE UMA VEZ
-            if (!empty($erros)) {
-                return redirect()->back()
-                    ->withErrors($erros)
-                    ->withInput();
-            }
-            
-            // PREPARA OS DADOS ATUALIZADOS COM OS NOVOS DADOS DA API
-            $dadosAtualizados = [
-                'titulo' => $request->titulo,
-                'genero' => $request->genero,
-                'ano' => $request->ano,
-                'poster' => isset($filmeApiCorrespondente['poster_path'])
-                    ? 'https://image.tmdb.org/t/p/w500' . $filmeApiCorrespondente['poster_path']
-                    : null,
-                'sinopse' => $filmeApiCorrespondente['overview'] ?? null,
-                'nota' => $filmeApiCorrespondente['vote_average'] ?? null
-            ];
-            
-        } else {
-            // Se o título não foi alterado, atualiza apenas os campos editados manualmente
-            $dadosAtualizados = [
-                'titulo' => $filme->titulo,
-                'genero' => $request->genero,
-                'ano' => $request->ano,
-                'poster' => $filme->poster,
-                'sinopse' => $filme->sinopse,
-                'nota' => $filme->nota
-            ];
         }
+        
+        $possiveisGeneros = array_unique(array_filter($possiveisGeneros));
+        sort($possiveisGeneros);
+        
+        if (!$generoEncontrado && !empty($possiveisGeneros)) {
+            $generosStr = implode(', ', $possiveisGeneros);
+            $erros['genero'] = "Gênero incorreto. Gêneros disponíveis: $generosStr";
+        }
+        
+        // SE HOUVER ERROS, MOSTRA TUDO DE UMA VEZ
+        if (!empty($erros)) {
+            return redirect()->back()
+                ->withErrors($erros)
+                ->withInput();
+        }
+        
+        // PREPARA OS DADOS ATUALIZADOS COM OS NOVOS DADOS DA API
+        $dadosAtualizados = [
+            'titulo' => $request->titulo,
+            'genero' => $request->genero,
+            'ano' => $request->ano,
+            'poster' => isset($filmeApiCorrespondente['poster_path'])
+                ? 'https://image.tmdb.org/t/p/w500' . $filmeApiCorrespondente['poster_path']
+                : null,
+            'sinopse' => $filmeApiCorrespondente['overview'] ?? null,
+            'nota' => $filmeApiCorrespondente['vote_average'] ?? null
+        ];
         
         // ATUALIZA O FILME NO BANCO DE DADOS
         $filme->update($dadosAtualizados);
